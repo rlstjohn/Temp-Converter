@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Temperature Converter</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #0f1117;
+  color: #e2e8f0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  margin: 0;
+}
+h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 6px; color: #f8fafc; }
+.sub { font-size: 0.85rem; color: #64748b; margin-bottom: 36px; }
+.card {
+  background: #1e2130;
+  border: 1px solid #2d3348;
+  border-radius: 16px;
+  padding: 32px;
+  width: 100%;
+  max-width: 420px;
+}
+label { display: block; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; margin-bottom: 10px; }
+input[type=number] {
+  width: 100%;
+  background: #0f1117;
+  border: 2px solid #2d3348;
+  border-radius: 10px;
+  padding: 14px 18px;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #f8fafc;
+  outline: none;
+  margin-bottom: 8px;
+  -moz-appearance: textfield;
+}
+input[type=number]:focus { border-color: #6366f1; }
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
+.error { color: #ef4444; font-size: 0.8rem; min-height: 20px; margin-bottom: 16px; }
+.results { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
+.box { background: #0f1117; border: 1px solid #2d3348; border-radius: 10px; padding: 16px; text-align: center; }
+.box-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.box.f .box-label { color: #f97316; }
+.box.k .box-label { color: #a78bfa; }
+.box-val { font-size: 1.6rem; font-weight: 800; color: #f8fafc; }
+.box-unit { font-size: 0.75rem; color: #64748b; margin-top: 4px; }
+.divider { height: 1px; background: #2d3348; margin-bottom: 20px; }
+.formula { font-family: monospace; font-size: 0.8rem; color: #64748b; background: #0f1117; border-radius: 8px; padding: 10px 14px; margin-bottom: 8px; }
+.formula b { color: #6366f1; }
+.foot { margin-top: 24px; font-size: 0.72rem; color: #334155; }
+</style>
+</head>
+<body>
+<h1>Temperature Converter</h1>
+<p class="sub">Type a value &mdash; results update instantly</p>
+<div class="card">
+  <label for="c">Celsius (&deg;C)</label>
+  <input type="number" id="c" placeholder="e.g. 100" step="any" autofocus>
+  <p class="error" id="err"></p>
+  <div class="results">
+    <div class="box f">
+      <div class="box-label">Fahrenheit</div>
+      <div class="box-val" id="f">&mdash;</div>
+      <div class="box-unit">&deg;F</div>
+    </div>
+    <div class="box k">
+      <div class="box-label">Kelvin</div>
+      <div class="box-val" id="k">&mdash;</div>
+      <div class="box-unit">K</div>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="formula">&deg;F = (&deg;C &times; <b>9/5</b>) + <b>32</b></div>
+  <div class="formula">K = &deg;C + <b>273.15</b></div>
+</div>
+<p class="foot">Absolute zero: &minus;273.15 &deg;C &nbsp;|&nbsp; Freezing: 0 &deg;C &nbsp;|&nbsp; Boiling: 100 &deg;C</p>
+<script>
+var inp = document.getElementById('c');
+var fEl = document.getElementById('f');
+var kEl = document.getElementById('k');
+var err = document.getElementById('err');
+inp.addEventListener('input', function() {
+  var v = inp.value.trim();
+  if (v === '' || v === '-') { fEl.innerHTML = kEl.innerHTML = '&mdash;'; err.textContent = ''; return; }
+  var c = parseFloat(v);
+  if (isNaN(c)) { err.textContent = 'Enter a valid number'; return; }
+  if (c < -273.15) { err.textContent = 'Below absolute zero (-273.15 C)'; fEl.innerHTML = kEl.innerHTML = '&mdash;'; return; }
+  err.textContent = '';
+  var f = (c * 9 / 5) + 32;
+  var k = c + 273.15;
+  fEl.textContent = Math.round(f * 100) / 100;
+  kEl.textContent = Math.round(k * 100) / 100;
+});
+</script>
+</body>
+</html>
